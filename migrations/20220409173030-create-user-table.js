@@ -13,7 +13,7 @@ module.exports = {
               primaryKey: true,
             },
             name: {
-              type: Sequelize.DataTypes.STRING,
+              type: Sequelize.DataTypes.TEXT,
               allowNull: false,
               field: "name",
             },
@@ -27,15 +27,16 @@ module.exports = {
               type: Sequelize.DataTypes.INTEGER,
               allowNull: false,
               field: "version",
+              defaultValue: 1,
             },
             createdAt: {
               type: Sequelize.DataTypes.DATE,
-              allowNull: false,
+              allowNull: true,
               field: "created_at",
             },
             updatedAt: {
               type: Sequelize.DataTypes.DATE,
-              allowNull: false,
+              allowNull: true,
               field: "updated_at",
             },
           },

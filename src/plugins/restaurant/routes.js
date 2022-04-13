@@ -5,8 +5,8 @@ const handler = require("./handlers");
 module.exports = [
   {
     method: "GET",
-    path: "/api/v1/restaurants",
-    handler: handler.getAll,
+    path: "/api/v1/restaurants/status/open",
+    handler: handler.getAllOpenRestaurants,
     options: {},
   },
 ];

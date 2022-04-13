@@ -72,7 +72,7 @@ const errorMapper = (object) => {
   if (name === "badImplementation") {
     return Boom.badImplementation(message);
   }
-  
+
   return error;
 };
 

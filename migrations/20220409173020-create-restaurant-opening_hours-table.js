@@ -11,6 +11,7 @@ module.exports = {
               type: Sequelize.DataTypes.INTEGER,
               allowNull: false,
               primaryKey: true,
+              autoIncrement: true,
             },
             restaurantId: {
               type: Sequelize.DataTypes.INTEGER,
@@ -29,30 +30,29 @@ module.exports = {
               field: "week_days",
             },
             openingTime: {
-              type: Sequelize.DataTypes.DECIMAL(10, 2),
+              type: Sequelize.DataTypes.TIME,
               allowNull: false,
-              defaultValue: 0.0,
               field: "opening_time",
             },
             closingTime: {
-              type: Sequelize.DataTypes.DECIMAL(10, 2),
+              type: Sequelize.DataTypes.TIME,
               allowNull: false,
-              defaultValue: 0.0,
               field: "closing_time",
             },
             version: {
               type: Sequelize.DataTypes.INTEGER,
               allowNull: false,
               field: "version",
+              defaultValue: 1,
             },
             createdAt: {
               type: Sequelize.DataTypes.DATE,
-              allowNull: false,
+              allowNull: true,
               field: "created_at",
             },
             updatedAt: {
               type: Sequelize.DataTypes.DATE,
-              allowNull: false,
+              allowNull: true,
               field: "updated_at",
             },
           },

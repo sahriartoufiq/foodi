@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
       },
       restaurantId: {
         type: DataTypes.INTEGER,
@@ -21,15 +22,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      openingTime: {
-        type: DataTypes.DECIMAL(10, 2),
+      openingHour: {
+        type: DataTypes.TIME,
         allowNull: false,
-        defaultValue: 0.0,
       },
-      closingTime: {
-        type: DataTypes.DECIMAL(10, 2),
+      closingHour: {
+        type: DataTypes.TIME,
         allowNull: false,
-        defaultValue: 0.0,
       },
     },
     {

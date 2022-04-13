@@ -1,10 +1,7 @@
-'use strict';
-
-const _ = require('lodash');
+"use strict";
 
 module.exports = {
   options: {
-    // if true then return with first error, if false then return with all the error
     abortEarly: false,
-  }
+  },
 };
