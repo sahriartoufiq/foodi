@@ -9,4 +9,10 @@ module.exports = [
     handler: handler.getAllOpenRestaurants,
     options: {},
   },
+  {
+    method: "GET",
+    path: "/api/v1/restaurants",
+    handler: handler.getRestaurants,
+    options: {},
+  },
 ];

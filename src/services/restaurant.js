@@ -39,6 +39,28 @@ class Restaurant extends HelperService {
       return { success: false, data: error };
     }
   }
+
+  async getRestaurants(minPrice, maxPrice, limit = 1000) {
+    try {
+      const result = await db.sequelize.query(
+        `SELECT distinct(restaurant.id), restaurant.restaurant_name
+           FROM "restaurant"
+           INNER JOIN restaurant_menu ON restaurant_menu.restaurant_id = restaurant.id
+           WHERE restaurant_menu.price BETWEEN '${minPrice}' AND '${maxPrice}'
+           ORDER BY restaurant.restaurant_name ASC
+           LIMIT ${limit}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      return { success: true, data: result };
+    } catch (error) {
+      logger.error(tag + ": getAll", error);
+
+      return { success: false, data: error };
+    }
+  }
 }
 
 module.exports = Restaurant;
