@@ -11,14 +11,11 @@ const _ = require("lodash");
 
 const tag = "services/restaurant.js";
 
-const getDishByName = async (dishName) => {
-  const dishes = await restaurantMenuService.readByWhereV2(
-    {
-      dishName: dishName,
-    },
-    null,
-    [{ model: db.restaurant, as: "restaurant" }]
-  );
+const getDishByNameAndRestaurant = async (dishName, restaurantId) => {
+  const dishes = await restaurantMenuService.readByWhereV2({
+    dishName,
+    restaurantId,
+  });
 
   if (dishes.length === 0) {
     throw {
@@ -41,6 +38,20 @@ const getUserById = async (userId) => {
   return users[0];
 };
 
+const getRestaurantByName = async (restaurantName) => {
+  const restaurants = await restaurantService.readByWhereV2({
+    restaurantName: restaurantName,
+  });
+
+  if (restaurants.length === 0) {
+    throw {
+      name: "notFound",
+    };
+  }
+
+  return restaurants[0];
+};
+
 class Purchase extends HelperService {
   constructor() {
     super("userPurchaseHistory");
@@ -52,7 +63,11 @@ class Purchase extends HelperService {
     try {
       const userId = payload.userId;
       const user = await getUserById(userId);
-      const dish = await getDishByName(payload.dishName);
+      const restaurant = await getRestaurantByName(payload.restaurantName);
+      const dish = await getDishByNameAndRestaurant(
+        payload.dishName,
+        restaurant.id
+      );
 
       if (user.cashBalance < dish.price) {
         throw {
@@ -64,7 +79,7 @@ class Purchase extends HelperService {
         {
           userId: userId,
           dishName: dish.dishName,
-          restaurantName: dish.restaurant.restaurantName,
+          restaurantName: restaurant.restaurantName,
           transactionAmount: dish.price,
           transactionDate: new Date(),
         },
@@ -82,7 +97,7 @@ class Purchase extends HelperService {
       await restaurantService.updateById(
         dish.restaurantId,
         {
-          cashBalance: dish.restaurant.cashBalance - dish.price,
+          cashBalance: restaurant.cashBalance - dish.price,
         },
         transaction
       );

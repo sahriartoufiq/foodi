@@ -66,13 +66,14 @@ class Restaurant extends HelperService {
   async searchRestaurants(searchBy, searchKey) {
     try {
       const query = _.isEqual(searchBy, "restaurant")
-        ? `SELECT restaurant.restaurant_name AS name
+        ? `SELECT restaurant.restaurant_name
            FROM "restaurant"
            WHERE restaurant.restaurant_name ILIKE '%${searchKey}%'
            ORDER BY restaurant.restaurant_name ASC
            `
-        : `SELECT restaurant_menu.dish_name AS name
+        : `SELECT restaurant.restaurant_name, restaurant_menu.dish_name
            FROM "restaurant_menu"
+           INNER JOIN restaurant ON restaurant.id = restaurant_menu.restaurant_id
            WHERE restaurant_menu.dish_name ILIKE '${searchKey}'
            ORDER BY restaurant_menu.dish_name ASC
            `;
@@ -81,7 +82,15 @@ class Restaurant extends HelperService {
         type: QueryTypes.SELECT,
       });
 
-      return { success: true, data: searchResult };
+      return {
+        success: true,
+        data: searchResult.map((element) => {
+          return {
+            restaurantName: element.restaurant_name,
+            dishName: element.dish_name,
+          };
+        }),
+      };
     } catch (error) {
       logger.error(tag + ": searchRestaurants", error);
 

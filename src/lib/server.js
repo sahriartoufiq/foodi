@@ -3,6 +3,10 @@
 const { ENV, HOST, PORT } = require("../utils/env");
 const { DEV } = require("../utils/constants");
 const logger = require("../utils/logger");
+const Inert = require("@hapi/inert");
+const Vision = require("@hapi/vision");
+const HapiSwagger = require("hapi-swagger");
+const Pack = require("package");
 
 const config = async () => {
   const server = require("@hapi/hapi").server({
@@ -16,6 +20,13 @@ const config = async () => {
     },
     debug: false, // disable Hapi debug console logging
   });
+
+  const swaggerOptions = {
+    info: {
+      title: "Buying Frenzy API Documentation",
+      version: Pack.version,
+    },
+  };
 
   await server.register([
     {
@@ -39,7 +50,12 @@ const config = async () => {
         redact: ["req.headers.authorization"],
       },
     },
-    require("inert"),
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: swaggerOptions,
+    },
     require("../plugins/restaurant"),
     require("../plugins/purchase"),
   ]);
