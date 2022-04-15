@@ -41,6 +41,7 @@ const config = async () => {
     },
     require("inert"),
     require("../plugins/restaurant"),
+    require("../plugins/purchase"),
   ]);
 
   server.route({

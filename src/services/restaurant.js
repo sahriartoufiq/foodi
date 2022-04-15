@@ -5,6 +5,7 @@ const { Sequelize } = db;
 const { QueryTypes } = Sequelize;
 const HelperService = require("./helper-service");
 const logger = require("../utils/logger");
+const _ = require("lodash");
 
 const tag = "services/restaurant.js";
 
@@ -19,7 +20,7 @@ class Restaurant extends HelperService {
       const day = date.getDay();
       const time = date.getHours() + ":" + date.getMinutes() + ":00";
 
-      const result = await db.sequelize.query(
+      const restaurants = await db.sequelize.query(
         `SELECT distinct(restaurant.id), restaurant.restaurant_name
            FROM "restaurant"
            INNER JOIN restaurant_opening_hours ON restaurant_opening_hours.restaurant_id = restaurant.id
@@ -32,7 +33,7 @@ class Restaurant extends HelperService {
         }
       );
 
-      return { success: true, data: result };
+      return { success: true, data: restaurants };
     } catch (error) {
       logger.error(tag + ": getAll", error);
 
@@ -56,7 +57,33 @@ class Restaurant extends HelperService {
 
       return { success: true, data: result };
     } catch (error) {
-      logger.error(tag + ": getAll", error);
+      logger.error(tag + ": getRestaurants", error);
+
+      return { success: false, data: error };
+    }
+  }
+
+  async searchRestaurants(searchBy, searchKey) {
+    try {
+      const query = _.isEqual(searchBy, "restaurant")
+        ? `SELECT restaurant.restaurant_name AS name
+           FROM "restaurant"
+           WHERE restaurant.restaurant_name ILIKE '%${searchKey}%'
+           ORDER BY restaurant.restaurant_name ASC
+           `
+        : `SELECT restaurant_menu.dish_name AS name
+           FROM "restaurant_menu"
+           WHERE restaurant_menu.dish_name ILIKE '${searchKey}'
+           ORDER BY restaurant_menu.dish_name ASC
+           `;
+
+      const searchResult = await db.sequelize.query(query, {
+        type: QueryTypes.SELECT,
+      });
+
+      return { success: true, data: searchResult };
+    } catch (error) {
+      logger.error(tag + ": searchRestaurants", error);
 
       return { success: false, data: error };
     }

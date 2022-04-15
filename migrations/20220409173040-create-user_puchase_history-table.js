@@ -40,7 +40,7 @@ module.exports = {
               field: "transaction_amount",
             },
             transactionDate: {
-              type: Sequelize.DataTypes.STRING,
+              type: Sequelize.DataTypes.DATE,
               allowNull: false,
               field: "transaction_date",
             },

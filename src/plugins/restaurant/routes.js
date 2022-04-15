@@ -15,4 +15,10 @@ module.exports = [
     handler: handler.getRestaurants,
     options: {},
   },
+  {
+    method: "GET",
+    path: "/api/v1/restaurants/search",
+    handler: handler.searchRestaurants,
+    options: {},
+  },
 ];

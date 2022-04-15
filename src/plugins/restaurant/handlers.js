@@ -22,4 +22,13 @@ module.exports = {
 
     return success(result.data);
   },
+
+  searchRestaurants: async (request, h) => {
+    const { search_by, search_key } = request.query;
+    const result = await service.searchRestaurants(search_by, search_key);
+
+    if (!result.success) return error(result.data);
+
+    return success(result.data);
+  },
 };
