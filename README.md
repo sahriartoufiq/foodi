@@ -1,8 +1,8 @@
-## Buying Frenzy
+## Foodi
 
 ## Description
 
-Buying Frenzy, a backend service and a database for a food delivery platform
+Foodi, a backend service and a database for a food delivery platform
 
 ## Setup project in local machine
 
