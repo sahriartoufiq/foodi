@@ -1,4 +1,4 @@
-## Buying Frenzy Backend
+## Buying Frenzy
 
 ## Description
 
